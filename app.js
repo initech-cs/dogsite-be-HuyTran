@@ -1,8 +1,8 @@
 var express = require('express');
 var logger = require('morgan');
 const mongoose = require('mongoose')
+const cors = require("cors")
 require('dotenv').config()
-
 
 var usersRouter = require('./routes/usersRouter');
 var authRouter = require('./routes/authRouter')
@@ -11,9 +11,10 @@ var app = express();
 app.use(logger('dev'));
 app.use(express.json());
 
-
+app.use(cors())
 app.use('/users', usersRouter);
 app.use('/', authRouter)
+// app.use(passport.initialize())
 
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {

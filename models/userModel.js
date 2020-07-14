@@ -76,5 +76,16 @@ userSchema.pre("save", async function(next){ // pre: middle ware
     next()
 })
 
+userSchema.statics.findOneOrCreate = async function({email, name}){
+    // `this` refers to User model
+    let user = await this.findOne({email})
+    if(!user){
+        user = await this.create({
+            email: email,
+            name: name
+        })
+    }
+}
+
 const User = mongoose.model("User", userSchema)
 module.exports = User
