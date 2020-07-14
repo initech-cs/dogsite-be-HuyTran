@@ -1,11 +1,11 @@
 const jwt = require("jsonwebtoken")
 const User = require("../models/userModel")
 
-const AppError = require("../utils/appError");
-const catchAsync = require("../utils/catchAsync");
+// const AppError = require("../utils/appError");
+// const catchAsync = require("../utils/catchAsync");
 
-exports.loginRequired = catchAsync(async (req, res, next) => { 
-
+exports.loginRequired = async (req, res, next) => { 
+    try{
         if(!req.headers.authorization || !req.headers.authorization.startsWith("Bearer")){
             return (new AppError(401,"Unauthorize 1"))
         }
@@ -22,11 +22,21 @@ exports.loginRequired = catchAsync(async (req, res, next) => {
         req.user = user
 
         next()
-})
+    }catch(err){
+        res.status(401).json({
+            status: "fail",
+            message: err.message
+        })
+    }
+        
+}
 
 exports.hostRequired = (req, res, next) => {
     if(req.user.type !== 'host'){
-        return (new AppError(401,"Host required"))
+        res.status(401).json({
+            status: "fail",
+            message: err.message
+        })
     }
     next()
 }
