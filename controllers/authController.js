@@ -60,4 +60,8 @@ exports.loginFacebook = async (req, res, next) => {
   const token = await user.generateToken();
 
   return res.status(200).json({ status: "success", data: { user, token } });
-};
+}
+
+exports.logout = async (req, res, next) => {
+  
+}
