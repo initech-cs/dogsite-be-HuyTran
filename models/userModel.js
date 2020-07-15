@@ -50,7 +50,7 @@ userSchema.methods.generateToken = async function(){
         email: user.email,
     },process.env.SECRET, { expiresIn: "10 days"})
     user.tokens.push(token) 
-    user.save()  
+    await user.save()  
     return token
 }
 
@@ -85,6 +85,7 @@ userSchema.statics.findOneOrCreate = async function({email, name}){
             name: name
         })
     }
+    return user
 }
 
 const User = mongoose.model("User", userSchema)
