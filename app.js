@@ -6,6 +6,7 @@ require("dotenv").config();
 
 var usersRouter = require("./routes/usersRouter");
 var authRouter = require("./routes/authRouter");
+var kennelRouter = require("./routes/kennelRouter")
 var app = express();
 
 app.use(logger("dev"));
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(cors());
 app.use("/users", usersRouter);
 app.use("/auth", authRouter);
+app.use("/", kennelRouter)
 // app.use(passport.initialize())
 
 // catch 404 and forward to error handler

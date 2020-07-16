@@ -2,7 +2,7 @@
 // const catchAsync = require("../utils/catchAsync");
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
-const axios = require('axios')
+const axios = require("axios");
 
 exports.loginWithEmail = async (req, res, next) => {
   try {
@@ -16,7 +16,7 @@ exports.loginWithEmail = async (req, res, next) => {
     }
 
     const user = await User.checkEmailPassword(email, password);
-    console.log(user)
+    console.log(user);
 
     if (!user) {
       return res.status(401).json({
@@ -34,15 +34,10 @@ exports.loginWithEmail = async (req, res, next) => {
         token: token,
       },
     });
-
-    res.status(201).json({
-      status: "success",
-      data: user,
-    });
   } catch (err) {
     res.status(401).json({
       status: "fail",
-      message: err.message
+      message: err.message,
     });
   }
 };
@@ -53,15 +48,18 @@ exports.loginFacebook = async (req, res, next) => {
     return res.status(401).json({ status: "failed", error: "need token" });
   }
 
-  const data = await axios.get(`https://graph.facebook.com/me?fields=id,name,email&access_token=${fbToken}`);
+  const data = await axios.get(
+    `https://graph.facebook.com/me?fields=id,name,email&access_token=${fbToken}`
+  );
 
-  const user = await User.findOneOrCreate({email: data.data.email, name: data.data.name});
+  const user = await User.findOneOrCreate({
+    email: data.data.email,
+    name: data.data.name,
+  });
 
   const token = await user.generateToken();
 
   return res.status(200).json({ status: "success", data: { user, token } });
-}
+};
 
-exports.logout = async (req, res, next) => {
-  
-}
+exports.logout = async (req, res, next) => {};

@@ -7,8 +7,7 @@ const jwt = require("jsonwebtoken");
 exports.createUser = async (req, res, next) => {
   try {
     const { email, name, password, phone, type } = req.body;
-    console.log(req.body);
-    if (!email || !name || !password || !phone || !type) {
+    if (!email || !name || !password || !phone ) {
       return res.status(401).json({
         status: "fail",
         message: "Missing something",
@@ -20,7 +19,6 @@ exports.createUser = async (req, res, next) => {
       name: name,
       password: password,
       phone: phone,
-      type: type || "guess",
     });
 
     res.status(201).json({ status: "success", data: user });
@@ -35,7 +33,7 @@ exports.createUser = async (req, res, next) => {
 exports.getUserList = async (req, res, next) => {
   try {
     const user = await User.find({});
-    console.log(user);
+    
     res.status(201).json({ status: "success", data: user });
   } catch (err) {
     res.status(401).json({
@@ -77,4 +75,32 @@ exports.updateUser = async (req, res, next) => {
     status: "success",
     data: user,
   });
+};
+
+
+exports.createUserAdmin = async (req, res, next) => {
+  try {
+    const { email, name, password, phone, type } = req.body;
+    if (!email || !name || !password || !phone) {
+      return res.status(401).json({
+        status: "fail",
+        message: "Missing something",
+      });
+    }
+
+    const user = await User.create({
+      email: email,
+      name: name,
+      password: password,
+      phone: phone,
+      type: "admin"
+    });
+
+    res.status(201).json({ status: "success", data: user });
+  } catch (err) {
+    res.status(401).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
 };

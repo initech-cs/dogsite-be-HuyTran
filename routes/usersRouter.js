@@ -1,13 +1,17 @@
 var express = require("express");
 var router = express.Router();
-const User = require("../models/userModel");
-const { getUserList, createUser, updateUser } = require("../controllers/userController");
+const { getUserList, createUser, updateUser, createUserAdmin } = require("../controllers/userController");
+const { loginRequired, adminRequired } = require("../middleware/auth");
+const { loginWithEmail } = require("../controllers/authController");
 
 /* GET users listing. */
 router.route("/")
-.get(getUserList)
+.get( getUserList)
 .post(createUser)
-.patch(updateUser)
+.patch(loginRequired, adminRequired, updateUser)
+
+router.route("/admin")
+.post(createUserAdmin)
 
 module.exports = router
 
