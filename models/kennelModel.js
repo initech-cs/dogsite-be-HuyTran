@@ -38,16 +38,39 @@ const kennelSchema = new mongoose.Schema({
         type: String,
         required:[true, "desc is required"]
     },
-    user: {
+    user:{
         type: mongoose.Schema.ObjectId,
         ref: "User", 
-        required: [true, "Breeder must have a user"]
-    }
+    }  
 },{
     timestamps: true,
     toJSON: {virtuals: true}, 
     toObject: {virtuals: true}
 })
+
+kennelSchema.virtual('purebreds', {
+    ref: 'Purebred',
+    localField: '_id',
+    foreignField: 'kennel',
+  });
+
+kennelSchema.statics.convertToObject = async function(arr){
+    //Change arr to arr of objectId
+    //Find the tag from each string from tag model
+    let foo = arr.map(async e => { 
+        let bar = await this.findOne({tag: e.toLowerCase().trim() })
+        
+        if(bar)
+            return bar
+
+        bar = await this.create({ tag: e.toLowerCase().trim() })
+        return bar 
+    })
+    let result = await Promise.all(foo)
+    console.log(result)
+
+    return result
+}
 
 const Kennel = mongoose.model("Kennel", kennelSchema)
 module.exports = Kennel

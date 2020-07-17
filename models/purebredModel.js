@@ -14,7 +14,7 @@ const purebredSchema = new mongoose.Schema({
         required: true
     }],
     age: {
-        type: String,
+        type: Number,
         required: true
     },
     height:{
@@ -30,7 +30,6 @@ const purebredSchema = new mongoose.Schema({
         ref: "Kennel", 
         required: true,
     },
-    is_available: Boolean,
     litter: {
         type: Number,
         required: true
@@ -38,7 +37,9 @@ const purebredSchema = new mongoose.Schema({
     gender:{
         type: String,
         required: true
-    }
+    },
+    price: Number,
+    desc: String,
 })
 
 const Purebred = mongoose.model("Purebred", purebredSchema)

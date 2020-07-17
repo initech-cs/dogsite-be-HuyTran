@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const validator = require('validator')
 
 const userSchema = new mongoose.Schema(
   {
@@ -10,11 +11,11 @@ const userSchema = new mongoose.Schema(
       unique: true,
       trim: true,
       lowercase: true,
-      // validate(value){
-      //     if(!validator.isEmail(value)){
-      //         throw new Error("Email is invalid")
-      //     }
-      // }
+      validate(value){
+          if(!validator.isEmail(value)){
+              throw new Error("Email is invalid")
+          }
+      }
     },
     name: {
       type: String,
@@ -36,23 +37,6 @@ const userSchema = new mongoose.Schema(
       required: [true, "Type is required"],
       default: "guess",
     },
-    // since:{
-    //     type: Number,
-    //     required:[true, "since is required"]
-    // },
-    // breeds:[String],
-    // images:{
-    //     type:String,
-    //     required:[true, "img is required"]
-    // },
-    // title:{
-    //     type: String,
-    //     required:[true, "title is required"]
-    // },
-    // desc:{
-    //     type: String,
-    //     required:[true, "desc is required"]
-    // }
   },
   {
     timestamps: true,
@@ -61,6 +45,11 @@ const userSchema = new mongoose.Schema(
   }
 );
 
+userSchema.virtual('kennels', {
+  ref: 'Kennel',
+  localField: '_id',
+  foreignField: 'user',
+});
 // method => only use if have a user
 userSchema.methods.generateToken = async function () {
   const user = this;

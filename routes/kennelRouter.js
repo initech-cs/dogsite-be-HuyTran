@@ -1,16 +1,19 @@
-const { getKennelList, createKennel, updateKennel } = require("../controllers/kennelController");
-const { loginRequired, kennelRequired } = require("../middleware/auth");
-const Purebred = require("../models/purebredModel");
+const { getKennelList, createKennel, updateKennel, deleteKennel, getSingleKennel } = require("../controllers/kennelController");
+const {kennelRequired, loginRequired} = require("../middleware/auth");
 const purebredRouter = require("./purebredRouter")
+const router = require("express").Router({mergeParams: true});
 
-const router = require("express").Router();
+router.use("/:kennelId/purebred", purebredRouter)
 
-router.route("/kennels")
+router.route("/")
 .get(getKennelList)
-.post(loginRequired, createKennel)
-.patch(kennelRequired, updateKennel)
+.post(loginRequired, kennelRequired, createKennel)
 
-router.use("/kennels/:kennelId/purebred/", purebredRouter)
+router.route("/:kennelId")
+.patch(updateKennel)
+.delete(deleteKennel)
+.get(getSingleKennel)
+
 
 
 module.exports = router;

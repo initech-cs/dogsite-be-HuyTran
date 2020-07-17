@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken")
 const User = require("../models/userModel")
 
-// const AppError = require("../utils/appError");
+
 // const catchAsync = require("../utils/catchAsync");
 
 exports.loginRequired = async (req, res, next) => { 
@@ -21,7 +21,9 @@ exports.loginRequired = async (req, res, next) => {
         // decoded._id
         const user = await User.findOne({_id: decoded, tokens: token})
         if(!user){
-            return (new AppError(401,"Unauthorize 2"))
+            return  res.status(401).json({
+                status:"fail",
+            })
         }
         req.user = user
 
@@ -39,17 +41,18 @@ exports.adminRequired = (req, res, next) => {
     if(req.user.type !== 'admin'){
         res.status(401).json({
             status: "fail",
-            message: err.message
+            message: "You are not Admin"
         })
     }
     next()
 }
 
-exports.kennelRequired = (req, res, next) => {
+exports.kennelRequired = async(req, res, next) => {
+    console.log(req.user)
     if(req.user.type !== 'kennel'){
         res.status(401).json({
             status: "fail",
-            message: err.message
+            message: "You are not kennel"
         })
     }
     next()

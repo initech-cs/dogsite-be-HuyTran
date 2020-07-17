@@ -3,6 +3,7 @@ const { JsonWebTokenError } = require("jsonwebtoken");
 // const AppError = require("../utils/appError");
 // const catchAsync = require("../utils/catchAsync");
 const jwt = require("jsonwebtoken");
+const Kennel = require("../models/kennelModel");
 
 exports.createUser = async (req, res, next) => {
   try {
@@ -13,7 +14,7 @@ exports.createUser = async (req, res, next) => {
         message: "Missing something",
       });
     }
-
+    
     const user = await User.create({
       email: email,
       name: name,
@@ -32,7 +33,7 @@ exports.createUser = async (req, res, next) => {
 
 exports.getUserList = async (req, res, next) => {
   try {
-    const user = await User.find({});
+    const user = await User.find({}).populate("kennels");
     
     res.status(201).json({ status: "success", data: user });
   } catch (err) {
@@ -51,7 +52,7 @@ exports.updateUser = async (req, res, next) => {
   if (!token) {
     return res.status(401).json({
       status: "fail",
-      message: "Error",
+      message: "Error, missing token",
     });
   }
 
@@ -59,7 +60,6 @@ exports.updateUser = async (req, res, next) => {
 
   // decoded._id
   const user = await User.findOne({ _id: decoded._id, tokens: token });
-  console.log(user);
   if (!user) {
     return res.status(401).json({ status: "fail", error: "Unauthorized 2" });
   }
@@ -76,7 +76,6 @@ exports.updateUser = async (req, res, next) => {
     data: user,
   });
 };
-
 
 exports.createUserAdmin = async (req, res, next) => {
   try {
@@ -103,4 +102,31 @@ exports.createUserAdmin = async (req, res, next) => {
       message: err.message,
     });
   }
-};
+}
+
+
+exports.getMyProfile = async(req, res, next) => {
+  try{
+    const myprofile = await User.findById( req.user._id)
+    console.log(myprofile)
+    res.json({status: "success", data: myprofile})
+  }catch(err){
+    res.status(401).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+}
+
+exports.upgradeToKennel = async(req, res, next) => {
+  const type = req.body
+  if(!req.user){res.send("fail")}
+
+  const user = await User.findByIdAndUpdate({_id: req.user._id, },{type: type.type}, {new: true})
+  console.log(user)
+
+  res.status(201).json({
+    status: "success",
+    data: user
+  })
+}
