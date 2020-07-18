@@ -104,7 +104,6 @@ exports.createUserAdmin = async (req, res, next) => {
   }
 }
 
-
 exports.getMyProfile = async(req, res, next) => {
   try{
     const myprofile = await User.findById( req.user._id)
