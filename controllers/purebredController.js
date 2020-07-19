@@ -2,7 +2,7 @@ const Purebred = require("../models/purebredModel")
 
 exports.createPurebred = async (req, res, next) => {
   try {
-    const { name, breed, images, age, height, weight, litter, gender, price, desc } = req.body;
+    const { name, breed, images, age, height, weight, litter, gender, price, desc, puppyImages } = req.body;
     if (!name || !breed || !images || !age || !height || !weight || litter === undefined || !gender) {
       return res.status(401).json({
         status: "fail",
@@ -17,7 +17,7 @@ exports.createPurebred = async (req, res, next) => {
     // pha app tao ha
     // else kennel
     const purebred = await Purebred.create({
-      name, breed, images, age, height, weight, litter, gender, price, desc, kennel: req.params.kennelId
+      name, breed, images, age, height, weight, litter, gender, price, desc, puppyImages, kennel: req.params.kennelId
     });
 
     res.status(201).json({ status: "success", data: purebred });

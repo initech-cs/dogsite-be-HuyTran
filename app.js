@@ -7,6 +7,7 @@ require("dotenv").config();
 var usersRouter = require("./routes/usersRouter");
 var authRouter = require("./routes/authRouter");
 var kennelRouter = require("./routes/kennelRouter")
+var breedRouter = require("./routes/breedRouter")
 var app = express();
 
 app.use(logger("dev"));
@@ -16,6 +17,7 @@ app.use(cors());
 app.use("/users", usersRouter);
 app.use("/auth", authRouter);
 app.use("/kennels", kennelRouter)
+app.use("/breeds", breedRouter)
 
 mongoose
   .connect(process.env.DB, {

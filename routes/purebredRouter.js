@@ -3,7 +3,7 @@ const {kennelRequired, loginRequired} = require("../middleware/auth")
 const router = require("express").Router({mergeParams: true})
 
 router.route("/")
-.get(loginRequired, kennelRequired, getPurebredList)
+.get(getPurebredList)
 .post(loginRequired, kennelRequired, createPurebred)
 
 router.route("/:purebredId")

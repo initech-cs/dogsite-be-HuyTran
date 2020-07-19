@@ -40,6 +40,7 @@ const purebredSchema = new mongoose.Schema({
     },
     price: Number,
     desc: String,
+    puppyImages: [String]
 })
 
 const Purebred = mongoose.model("Purebred", purebredSchema)
