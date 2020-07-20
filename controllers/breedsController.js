@@ -31,3 +31,27 @@ exports.getBreedListById = async (req, res, next) => {
         })
       }
 }
+
+
+exports.filterBreeds = async(req, res, next) => {
+  
+  const {breedgroup, temperament} = req.query
+
+  let queries = []
+
+  if(breedgroup){
+    // return res.json({
+    //   data: await Breed.find({})
+    // })
+    queries.push({breedGroup: {$eq:breedgroup}})
+  }
+
+  const finalQuery = queries.length == 0 ? {} : {$and: queries}
+
+  const filterBreed = await Breed.find(finalQuery)
+
+  res.status(201).json({
+    status: "success",
+    data: filterBreed
+  })
+}

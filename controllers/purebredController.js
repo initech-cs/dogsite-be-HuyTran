@@ -31,7 +31,9 @@ exports.createPurebred = async (req, res, next) => {
 
 exports.getPurebredList = async(req, res, next) => {
   try{
-    const purebred = await Purebred.find({})
+    const id = req.params.kennelId
+
+    const purebred = await Purebred.find({kennel: id})
     res.status(201).json({ status: "success", data: purebred });
   }catch(err){
     res.status(401).json({
