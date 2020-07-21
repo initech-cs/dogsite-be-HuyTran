@@ -2,8 +2,18 @@ const Breed = require("../models/breedModel")
 
 exports.getBreedList = async (req, res, next) => {
     try{
-        const breed = await Breed.find({})
-        res.status(201).json({ status: "success", data: breed });
+        // pagination
+        let query = Breed.find({})
+
+        const page = req.query.page * 1 || 1; // why have to * 1: "1" to 1(from string to number) 
+        const limit = req.query.limit * 1 || 20;
+        const skip = (page - 1) * limit;
+
+        query = query.skip(skip).limit(limit); 
+
+        const breeds = await query
+
+        res.status(201).json({ status: "success", data: breeds });
       }catch(err){
         res.status(401).json({
           status: "fail",
@@ -35,7 +45,7 @@ exports.getBreedListById = async (req, res, next) => {
 
 exports.filterBreeds = async(req, res, next) => {
   
-  const {breedgroup, temperament} = req.query
+  const {breedgroup} = req.query
 
   let queries = []
 

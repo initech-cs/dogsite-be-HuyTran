@@ -38,8 +38,21 @@ exports.createKennel = async (req, res, next) => {
 
 exports.getKennelList = async (req, res, next) => {
   try {
-    const kennel = await Kennel.find({});
-    res.status(201).json({ status: "success", data: kennel });
+    // const searchName = await Kennel.find({$text: { $search: "Teepit"}})
+    // const filters = {}
+    // ?search=Teepit HCM
+    const {search} = req.query
+    console.log(search)
+    let q
+    if(search){
+      q = Kennel.find({$text: { $search: search }})
+    }else{
+      q = Kennel.find({})
+    }
+
+    const data = await q
+
+    res.status(201).json({ status: "success", data: data});
   } catch (err) {
     res.status(401).json({
       status: "fail",
@@ -110,3 +123,8 @@ exports.getSingleKennel = async (req, res, next) => {
     res.json({ status: "fail", message: err.message });
   }
 };
+
+// exports.searchKennelByName = async (req, res, next) => {
+
+// }
+

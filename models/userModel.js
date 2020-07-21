@@ -61,6 +61,7 @@ userSchema.methods.generateToken = async function () {
     },
     process.env.SECRET
   );
+  console.log("sdsakdasjdsa")
   user.tokens.push(token);
   await user.save();
   return token;

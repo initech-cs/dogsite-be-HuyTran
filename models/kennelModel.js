@@ -41,8 +41,9 @@ const kennelSchema = new mongoose.Schema({
     user:{
         type: mongoose.Schema.ObjectId,
         ref: "User", 
-    }  
-},{
+    },
+    city: String,
+    },{
     timestamps: true,
     toJSON: {virtuals: true}, 
     toObject: {virtuals: true}
@@ -72,5 +73,6 @@ kennelSchema.statics.convertToObject = async function(arr){
     return result
 }
 
+kennelSchema.index({name: "text"})
 const Kennel = mongoose.model("Kennel", kennelSchema)
 module.exports = Kennel

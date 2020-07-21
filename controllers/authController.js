@@ -7,6 +7,7 @@ const axios = require("axios");
 exports.loginWithEmail = async (req, res, next) => {
   try {
     const { email, password } = req.body;
+    console.log(email, password);
 
     if (!email || !password) {
       return res.status(401).json({
@@ -16,6 +17,7 @@ exports.loginWithEmail = async (req, res, next) => {
     }
 
     const user = await User.checkEmailPassword(email, password);
+    // const user = await User.findOne({ email: email });
     console.log(user);
 
     if (!user) {
@@ -44,6 +46,7 @@ exports.loginWithEmail = async (req, res, next) => {
 
 exports.loginFacebook = async (req, res, next) => {
   const fbToken = req.query.token;
+
   if (!fbToken) {
     return res.status(401).json({ status: "failed", error: "need token" });
   }
@@ -58,10 +61,7 @@ exports.loginFacebook = async (req, res, next) => {
   });
 
   const token = await user.generateToken();
-
+  console.log(token);
   return res.status(200).json({ status: "success", data: { user, token } });
 };
 
-exports.logout = async (req, res, next) => {
-
-}
