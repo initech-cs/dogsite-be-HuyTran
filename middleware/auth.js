@@ -4,7 +4,7 @@ const User = require("../models/userModel");
 // const catchAsync = require("../utils/catchAsync");
 
 exports.loginRequired = async (req, res, next) => {
-  
+
   try {
     if (
       !req.headers.authorization ||
@@ -14,9 +14,8 @@ exports.loginRequired = async (req, res, next) => {
         status: "fail",
       });
     }
-
     const token = req.headers.authorization.replace("Bearer ", "");
-    
+
     const decoded = jwt.verify(token, process.env.SECRET);
 
     // decoded._id
@@ -48,7 +47,6 @@ exports.adminRequired = (req, res, next) => {
 };
 
 exports.kennelRequired = async (req, res, next) => {
-  console.log(req.user);
   if (req.user.type !== "kennel") {
     res.status(401).json({
       status: "fail",

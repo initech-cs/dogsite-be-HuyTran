@@ -14,7 +14,7 @@ exports.createUser = async (req, res, next) => {
         message: "Missing something",
       });
     }
-    
+
     const user = await User.create({
       email: email,
       name: name,

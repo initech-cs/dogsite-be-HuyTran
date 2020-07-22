@@ -4,17 +4,19 @@ const Kennel = require("../models/kennelModel");
 // const catchAsync = require("../utils/catchAsync");
 // const jwt = require("jsonwebtoken");
 
-exports.createKennel = async (req, res, next) => {
+exports.createKennel = async (req, res, next) => {   
+  
+
   try {
-    const { email, name, phone, since, images, slogan, desc, city } = req.body;
-    console.log(email, name, phone, since, images, slogan, desc);
-    if (!email || !name || !phone || !since || !images || !slogan || !desc) {
+    const { email, name, phone, since, images, slogan, desc, city, breeds } = req.body;
+    if (!email || !name || !phone || !since || !images || !slogan || !desc || !city || !breeds) {
       return res.status(401).json({
         status: "fail",
         message: "Missing somethingsss",
       });
     }
-    
+ 
+
     const kennel = await Kennel.create({
       email,
       name,
@@ -24,9 +26,9 @@ exports.createKennel = async (req, res, next) => {
       slogan,
       desc,
       city,
+      breeds,
       user: req.user._id
     });
-
 
     res.status(201).json({ status: "success", data: kennel });
   } catch (err) {
