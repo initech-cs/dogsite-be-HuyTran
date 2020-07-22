@@ -13,6 +13,7 @@ router.route("/")
 .post(createUser)
 
 router.route("/:userId")
+// .get(getMyProfile)
 .patch(updateUser)
 
 router.route("/me")

@@ -6,7 +6,7 @@ const Kennel = require("../models/kennelModel");
 
 exports.createKennel = async (req, res, next) => {
   try {
-    const { email, name, phone, since, images, slogan, desc } = req.body;
+    const { email, name, phone, since, images, slogan, desc, city } = req.body;
     console.log(email, name, phone, since, images, slogan, desc);
     if (!email || !name || !phone || !since || !images || !slogan || !desc) {
       return res.status(401).json({
@@ -23,6 +23,7 @@ exports.createKennel = async (req, res, next) => {
       images,
       slogan,
       desc,
+      city,
       user: req.user._id
     });
 
@@ -42,7 +43,6 @@ exports.getKennelList = async (req, res, next) => {
     // const filters = {}
     // ?search=Teepit HCM
     const {search} = req.query
-    console.log(search)
     let q
     if(search){
       q = Kennel.find({$text: { $search: search }})

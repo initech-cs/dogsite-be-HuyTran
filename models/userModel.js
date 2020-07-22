@@ -37,6 +37,12 @@ const userSchema = new mongoose.Schema(
       required: [true, "Type is required"],
       default: "guess",
     },
+    city: String,
+    relationship: String,
+    interestedIn: String,
+    country: String,
+    age: Number,
+    address: String
   },
   {
     timestamps: true,
@@ -61,7 +67,6 @@ userSchema.methods.generateToken = async function () {
     },
     process.env.SECRET
   );
-  console.log("sdsakdasjdsa")
   user.tokens.push(token);
   await user.save();
   return token;

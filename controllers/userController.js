@@ -7,7 +7,7 @@ const Kennel = require("../models/kennelModel");
 
 exports.createUser = async (req, res, next) => {
   try {
-    const { email, name, password, phone, type } = req.body;
+    const { email, name, password, phone, type, address, city, interestedIn, relationship, country, age } = req.body;
     if (!email || !name || !password || !phone ) {
       return res.status(401).json({
         status: "fail",
@@ -20,6 +20,12 @@ exports.createUser = async (req, res, next) => {
       name: name,
       password: password,
       phone: phone,
+      city: city, 
+      interestedIn: interestedIn, 
+      relationship: relationship, 
+      country: country,
+      age: age,
+      address: address
     });
 
     res.status(201).json({ status: "success", data: user });
@@ -105,9 +111,9 @@ exports.createUserAdmin = async (req, res, next) => {
 }
 
 exports.getMyProfile = async(req, res, next) => {
+  console.log(req.user._id)
   try{
-    const myprofile = await User.findById( req.user._id)
-    console.log(myprofile)
+    const myprofile = await User.findById( req.user._id).populate("kennels")
     res.json({status: "success", data: myprofile})
   }catch(err){
     res.status(401).json({

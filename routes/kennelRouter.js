@@ -11,6 +11,8 @@ router.route("/")
 .post(loginRequired, kennelRequired, createKennel)
 
 
+
+
 router.route("/:kennelId")
 .patch(updateKennel)
 .delete(deleteKennel)
