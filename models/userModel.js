@@ -44,7 +44,8 @@ const userSchema = new mongoose.Schema(
     age: Number,
     address: String,
     avatar: String,
-    gender: String
+    gender: String,
+    images: String
   },
   {
     timestamps: true,

@@ -7,7 +7,7 @@ const Kennel = require("../models/kennelModel");
 
 exports.createUser = async (req, res, next) => {
   try {
-    const { email, name, password, phone, address, city, interestedIn, relationship, country, age, avatar, gender} = req.body;
+    const { email, name, password, phone, address, city, interestedIn, relationship, country, age, avatar, gender, images} = req.body;
     if (!email || !name || !password || !phone ) {
       return res.status(401).json({
         status: "fail",
@@ -27,7 +27,8 @@ exports.createUser = async (req, res, next) => {
       age: age,
       address: address,
       avatar: avatar,
-      gender: gender
+      gender: gender,
+      images: images
     });
 
     res.status(201).json({ status: "success", data: user });
@@ -69,6 +70,7 @@ exports.updateUser = async (req, res, next) => {
   if (req.body.address) { user.address = req.body.address; }
   if (req.body.avatar){ user.avatar = req.body.avatar }
   if (req.body.gender){ user.gender = req.body.gender }
+  if (req.body.images){ user.images = req.body.images }
 
   await user.save();
 
