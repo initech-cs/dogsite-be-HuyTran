@@ -14,10 +14,11 @@ router.route("/")
 
 router.route("/:userId")
 // .get(getMyProfile)
-.patch(updateUser)
+
 
 router.route("/me")
 .get(loginRequired, getMyProfile)
+.patch(loginRequired,updateUser)
 
 router.route("/admin")
 .post(createUserAdmin)

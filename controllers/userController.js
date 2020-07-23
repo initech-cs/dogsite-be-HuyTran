@@ -7,7 +7,7 @@ const Kennel = require("../models/kennelModel");
 
 exports.createUser = async (req, res, next) => {
   try {
-    const { email, name, password, phone, type, address, city, interestedIn, relationship, country, age } = req.body;
+    const { email, name, password, phone, address, city, interestedIn, relationship, country, age, avatar, gender} = req.body;
     if (!email || !name || !password || !phone ) {
       return res.status(401).json({
         status: "fail",
@@ -25,7 +25,9 @@ exports.createUser = async (req, res, next) => {
       relationship: relationship, 
       country: country,
       age: age,
-      address: address
+      address: address,
+      avatar: avatar,
+      gender: gender
     });
 
     res.status(201).json({ status: "success", data: user });
@@ -53,27 +55,20 @@ exports.getUserList = async (req, res, next) => {
 exports.updateUser = async (req, res, next) => {
   // console.log(req.query.id) // http://localhost:5000/users?id=...(id from query)
   // let oldUser = await User.findById(req.query.id)
-
-  const token = req.body.token;
-  if (!token) {
-    return res.status(401).json({
-      status: "fail",
-      message: "Error, missing token",
-    });
-  }
-
-  const decoded = jwt.verify(token, process.env.SECRET);
-
-  // decoded._id
-  const user = await User.findOne({ _id: decoded._id, tokens: token });
-  if (!user) {
-    return res.status(401).json({ status: "fail", error: "Unauthorized 2" });
-  }
+  const user = req.user
 
   if (req.body.name) { user.name = req.body.name; }
   if (req.body.phone) { user.phone = req.body.phone; }
   if (req.body.email) { user.email = req.body.email; }
   if (req.body.password){ user.password = req.body.password }
+  if (req.body.city) { user.city = req.body.city; }
+  if (req.body.relationship) { user.relationship = req.body.relationship; }
+  if (req.body.interestedIn) { user.interestedIn = req.body.interestedIn; }
+  if (req.body.country){ user.country = req.body.country }
+  if (req.body.age) { user.age = req.body.age; }
+  if (req.body.address) { user.address = req.body.address; }
+  if (req.body.avatar){ user.avatar = req.body.avatar }
+  if (req.body.gender){ user.gender = req.body.gender }
 
   await user.save();
 

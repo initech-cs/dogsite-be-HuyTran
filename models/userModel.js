@@ -42,7 +42,9 @@ const userSchema = new mongoose.Schema(
     interestedIn: String,
     country: String,
     age: Number,
-    address: String
+    address: String,
+    avatar: String,
+    gender: String
   },
   {
     timestamps: true,
